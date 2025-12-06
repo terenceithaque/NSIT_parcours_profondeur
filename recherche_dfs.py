@@ -2,50 +2,59 @@
 from collections import deque
 
 
-class File:
-    """Une file pouvant être utilisée pour le parcours en profondeur.
-    Rappel : dans une file, le premier élément entré est toujours le premier sorti (FIFO)."""
+class Pile:
+    """Une pile pouvant être utilisée pour le parcours en profondeur.
+    Dans une pile, le premier élément entré est toujours le dernier sorti (FILO)."""
 
-    def __init__(self, taille=20):
+    def __init__(self, taille=20) -> None:
 
-        # Contenu de la file
         self.contenu = deque(maxlen=taille)
+    
 
+    def empile(self, element) -> None:
+        """Empile un élément dans la pile. Si la pile est pleine, une erreur est déclenchée."""
+        if not self.est_pleine():
+            self.contenu.appendleft(element)
 
-    def enfile(self, element) -> None:
-        """Enfile un élément dans la file.
-        Si la pile est déjà pleine, entraîne une erreur."""
-        if self.est_pleine():
-            raise OverflowError("La file est pleine")
+        else:
+            raise OverflowError("La pile est déjà pleine.")
+
+    def depile(self) -> any:
+        """Dépile l'élément situé en haut de la pile et le renvoie. Si la pile est vide, une erreur est déclenchée."""
+        if not self.est_vide():
+            return self.contenu.popleft() # On dépile l'élément en haut de la pile
         
-        self.contenu.append(element)
+        else:
+            raise IndexError("La pile est vide.")
 
-
-    def defile(self) -> any:
-        """Retire l'élément en tête de la file et le renvoie."""
-        if self.est_vide():
-            raise IndexError("La file est vide")
-        
-        return self.contenu.popleft() # Retirer et renvoyer l'élément à l'extrémité gauche de la file
-
+    
     def est_vide(self) -> bool:
-        """Renvoie True si la file est vide, False sinon."""
+        """Renvoie True si la pile est vide, False sinon."""
         return len(self.contenu) == 0
 
     def est_pleine(self) -> bool:
-        """Renvoie True si la file est pleine, False sinon."""
+        """Renvoie True si la pile est pleine, False sinon."""
         return len(self.contenu) == self.contenu.maxlen
 
 
+    def __repr__(self) -> str:
+        rep = ""
+        for element in self.contenu:
+            rep += str(element) + "\n"
+
+        return rep    
+            
 
 
-# Test : instanciation d'une file
-ma_file = File(taille=20)
-print("Contenu initial de la file :", ma_file.contenu)
-print("File vide :", ma_file.est_vide())
-ma_file.enfile("a")
-ma_file.enfile("b")
-ma_file.enfile("c")
-print("Contenu de la file :", ma_file.contenu)
-print("Élément défilé :", ma_file.defile())
-print("File pleine :", ma_file.est_pleine())
+
+if __name__ == "__main__":
+    # Test : implémentation d'une pile
+    ma_pile = Pile(20)
+    print("Contenu initial de la pile :", ma_pile.contenu)
+    ma_pile.empile("a")
+    ma_pile.empile("b")
+    ma_pile.empile("c")
+    print(ma_pile)
+    print(ma_pile.contenu)
+    print("Élément dépilé :", ma_pile.depile())
+    print(ma_pile)
