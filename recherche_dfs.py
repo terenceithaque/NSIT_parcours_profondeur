@@ -1,4 +1,5 @@
 # Script pour le parcours en profondeur
+from collections import deque
 
 
 class File:
@@ -8,23 +9,24 @@ class File:
     def __init__(self, taille=20):
 
         # Contenu de la file
-        self.contenu = []
-
-        self.taille = taille
+        self.contenu = deque(maxlen=taille)
 
 
     def enfile(self, element) -> None:
-        """Enfile un élément dans la file."""
-        if len(self.contenu) < self.taille:
-            self.contenu = [element] + self.contenu
+        """Enfile un élément dans la file.
+        Si la pile est déjà pleine, entraîne une erreur."""
+        if self.est_pleine():
+            raise OverflowError("La file est pleine")
+        
+        self.contenu.append(element)
 
 
     def defile(self) -> any:
         """Retire l'élément en tête de la file et le renvoie."""
-        assert len(self.contenu) > 0, "Impossible de défiler un élément depuis une liste vide."
-
-        element = self.contenu.pop()
-        return element
+        if self.est_vide():
+            raise IndexError("La file est vide")
+        
+        return self.contenu.popleft() # Retirer et renvoyer l'élément à l'extrémité gauche de la file
 
     def est_vide(self) -> bool:
         """Renvoie True si la file est vide, False sinon."""
@@ -32,7 +34,7 @@ class File:
 
     def est_pleine(self) -> bool:
         """Renvoie True si la file est pleine, False sinon."""
-        return len(self.contenu) == self.taille
+        return len(self.contenu) == self.contenu.maxlen
 
 
 
