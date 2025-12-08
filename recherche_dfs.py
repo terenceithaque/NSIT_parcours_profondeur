@@ -67,6 +67,10 @@ def chercher_dfs(labyrinthe:nx.Graph, source, destination) -> list:
         print("Sommet actuel :", sommet_actuel)
         print("Voisins :", voisins)
         
+        # On s'arrête si la destination est trouvée
+        if destination in voisins:
+            return sommets_visites
+        
         # On explore les voisins du sommet actuel
         for v in voisins:
             sommets_visites.append(v)
