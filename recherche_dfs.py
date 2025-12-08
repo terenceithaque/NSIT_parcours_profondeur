@@ -1,5 +1,6 @@
 # Script pour le parcours en profondeur
 from collections import deque
+import networkx as nx
 
 
 class Pile:
@@ -42,7 +43,18 @@ class Pile:
         for element in self.contenu:
             rep += str(element) + "\n"
 
-        return rep    
+        return rep
+    
+
+
+def chercher_dfs(labyrinthe:nx.Graph, source, destination) -> list:
+    """Effectue un parcours en profondeur d'un graphe entre deux sommets (source et destination) en renvoyant
+       la liste des arêtes parcourues."""
+    
+    sommets_visites = [] # Liste des sommets visités
+    sommets_fermes = [] # Liste des sommets fermés
+    
+    p = Pile(100)
             
 
 
