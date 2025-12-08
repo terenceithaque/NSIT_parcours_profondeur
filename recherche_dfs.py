@@ -54,19 +54,45 @@ def chercher_dfs(labyrinthe:nx.Graph, source, destination) -> list:
     sommets_visites = [] # Liste des sommets visités
     sommets_fermes = [] # Liste des sommets fermés
     
-    p = Pile(100)
-            
+    p = Pile(200)
+    
+    sommets_visites.append(source)
+    p.empile(source)
+    
+    sommet_actuel = source
+    
+    while not p.est_vide():
+        # Récupérer les voisins du noeud actuel
+        voisins = [v for v in labyrinthe.neighbors(sommet_actuel) if v not in sommets_visites]
+        print("Sommet actuel :", sommet_actuel)
+        print("Voisins :", voisins)
+        
+        # On explore les voisins du sommet actuel
+        for v in voisins:
+            sommets_visites.append(v)
+            # Si la pile n'est pas pleine, on empile le voisin
+            if not p.est_pleine():
+                p.empile(v)
+                
+        sommets_fermes.append(sommet_actuel) # On ferme le sommet actuel
+        sommet_actuel = p.depile() # Le dernier sommet empilé devient le sommet actuel
+   
+    return sommets_fermes
 
 
-
+# Ce bloc ne s'exécutera pas si le fichier est importé comme module
 if __name__ == "__main__":
-    # Test : implémentation d'une pile
-    ma_pile = Pile(20)
-    print("Contenu initial de la pile :", ma_pile.contenu)
-    ma_pile.empile("a")
-    ma_pile.empile("b")
-    ma_pile.empile("c")
-    print(ma_pile)
-    print(ma_pile.contenu)
-    print("Élément dépilé :", ma_pile.depile())
-    print(ma_pile)
+    # Test de la fonction chercher_dfs()
+    laby = nx.Graph()
+    laby.add_nodes_from(["A", "B", "C", "D", "E", "F"])
+    laby.add_edge("A", "B")
+    laby.add_edge("A", "C")
+    # Branches à partir du sommet B
+    laby.add_edge("B", "D")
+    laby.add_edge("B", "E")
+    laby.add_edge("E", "G")
+    laby.add_edge("G", "H")
+    
+    # Branche à partir du sommet C
+    laby.add_edge("C", "F")
+    print(chercher_dfs(laby,"A", "E"))
