@@ -1,6 +1,7 @@
 # Script pour le parcours en profondeur
 from collections import deque
 import networkx as nx
+import matplotlib.pyplot as plt
 
 
 class Pile:
@@ -45,6 +46,42 @@ class Pile:
 
         return rep
     
+    
+
+def voisin_plus_loin(sommets:list, voisins:list, sommet):
+    """Renvoie le voisin de degré le plus éloigné du sommet donné"""
+    
+    voisin = sommet
+    indice_sommet = sommets.index(sommet)
+    
+    for i in range(indice_sommet-1, -1, -1):
+        if sommets[i] in voisins:
+            voisin = sommets[i]     
+    return voisin        
+    
+
+
+def backtracking(labyrinthe:nx.Graph, sommets:list) -> list:
+    """Effectue le retour à la trace permettant de simplifier le chemin renvoyé par le parcours en profondeur entre deux sommets"""
+    assert len(sommets) > 0, "La liste des sommets ne doit pas être vide"
+
+    
+    # On démarre au dernier sommet de la liste
+    sommet_actuel = sommets[-1]
+    trace = [sommet_actuel]
+    
+    while sommet_actuel != sommets[0]:
+        print("Sommet actuel :", sommet_actuel)
+        # Trouver les voisins du sommet actuel
+        voisins = labyrinthe.neighbors(sommet_actuel)
+        print("Voisins du sommet actuel :", list(voisins))
+        sommet_actuel = voisin_plus_loin(sommets, voisins, sommet_actuel)
+        print("Nouveau sommet actuel :", sommet_actuel)
+        trace.append(sommet_actuel)
+    
+    return trace
+    
+    
 
 
 def chercher_dfs(labyrinthe:nx.Graph, source, destination) -> list:
@@ -69,6 +106,7 @@ def chercher_dfs(labyrinthe:nx.Graph, source, destination) -> list:
         
         # On s'arrête si la destination est trouvée
         if destination in voisins:
+            sommets_visites.append(destination)
             return sommets_visites
         
         # On explore les voisins du sommet actuel
@@ -82,6 +120,10 @@ def chercher_dfs(labyrinthe:nx.Graph, source, destination) -> list:
         sommet_actuel = p.depile() # Le dernier sommet empilé devient le sommet actuel
    
     return sommets_fermes
+
+            
+        
+        
 
 
 # Ce bloc ne s'exécutera pas si le fichier est importé comme module
@@ -99,4 +141,19 @@ if __name__ == "__main__":
     
     # Branche à partir du sommet C
     laby.add_edge("C", "F")
-    print(chercher_dfs(laby,"A", "E"))
+    
+    
+    
+    
+    
+    recherche = chercher_dfs(laby,"A", "E")
+    print(recherche)
+    print(backtracking(laby, recherche), "vs", nx.shortest_path(laby, "A", "E"))
+    
+    
+    
+    
+    nx.draw(laby, with_labels=True)
+    
+    plt.show()
+    
