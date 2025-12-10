@@ -83,8 +83,8 @@ def backtracking(labyrinthe:nx.Graph, sommets:list) -> list:
         print("Nouveau sommet actuel :", sommet_actuel)
         trace.append(sommet_actuel)
 
-        
-    return trace
+
+    return trace[::-1]
     
     
 
