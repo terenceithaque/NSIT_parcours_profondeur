@@ -112,6 +112,16 @@ def chercher_dfs(labyrinthe:nx.Graph, source, destination) -> list:
         # On s'arrête si la destination est trouvée
         if destination in voisins:
             sommets_visites.append(destination)
+
+            """"# Construction de l'itinéraire
+            itineraire = []
+
+            for i in range(len(sommets_visites) -1):
+                sommet = sommets_visites[i]
+                itineraire.append((sommet, sommets_visites[i+1]))
+            
+            return itineraire"""
+
             return sommets_visites
         
         # On explore les voisins du sommet actuel
@@ -123,7 +133,18 @@ def chercher_dfs(labyrinthe:nx.Graph, source, destination) -> list:
                 
         sommets_fermes.append(sommet_actuel) # On ferme le sommet actuel
         sommet_actuel = p.depile() # Le dernier sommet empilé devient le sommet actuel
-   
+    
+
+    """"# Construction de l'itinéraire
+    itineraire = []
+
+    for i in range(len(sommets_fermes) -1):
+        sommet = sommets_fermes[i]
+        itineraire.append((sommet, sommets_fermes[i+1]))
+
+
+    return itineraire"""
+
     return sommets_fermes
 
             
