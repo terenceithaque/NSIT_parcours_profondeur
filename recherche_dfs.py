@@ -2,6 +2,7 @@
 from collections import deque
 import networkx as nx
 import matplotlib.pyplot as plt
+import time
 
 
 class Pile:
@@ -71,14 +72,18 @@ def backtracking(labyrinthe:nx.Graph, sommets:list) -> list:
     trace = [sommet_actuel]
     
     while sommet_actuel != sommets[0]:
+        print("Voisin le plus éloigné du sommet actuel :", voisin_plus_loin(sommets, list(labyrinthe.neighbors(sommet_actuel)), sommet_actuel))
+        #time.sleep(1)
         print("Sommet actuel :", sommet_actuel)
         # Trouver les voisins du sommet actuel
-        voisins = labyrinthe.neighbors(sommet_actuel)
+        voisins = list(labyrinthe.neighbors(sommet_actuel))
         print("Voisins du sommet actuel :", list(voisins))
+        
         sommet_actuel = voisin_plus_loin(sommets, voisins, sommet_actuel)
         print("Nouveau sommet actuel :", sommet_actuel)
         trace.append(sommet_actuel)
-    
+
+        
     return trace
     
     
@@ -148,6 +153,9 @@ if __name__ == "__main__":
     
     recherche = chercher_dfs(laby,"A", "E")
     print(recherche)
+    voisin_e = voisin_plus_loin(recherche, ["B", "G"], "E")
+    print(voisin_e)
+    print(voisin_plus_loin(recherche, list(laby.neighbors(voisin_e)), voisin_e))
     print(backtracking(laby, recherche), "vs", nx.shortest_path(laby, "A", "E"))
     
     
