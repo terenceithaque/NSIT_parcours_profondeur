@@ -185,7 +185,7 @@ if __name__ == "__main__":
 
     
     
-    
+    plt.clf()
     
     nx.draw(laby, with_labels=True)
     
