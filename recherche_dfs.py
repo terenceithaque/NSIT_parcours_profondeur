@@ -91,7 +91,7 @@ def backtracking(labyrinthe:nx.Graph, sommets:list) -> list:
 
 def chercher_dfs(labyrinthe:nx.Graph, source, destination) -> list:
     """Effectue un parcours en profondeur d'un graphe entre deux sommets (source et destination) en renvoyant
-       la liste des arêtes parcourues."""
+       l'itinéraire (liste des arêtes parcourues) sous forme de liste [(sommet1, sommet2), (sommet2, sommet3),... (sommetX, destination)]."""
     
     sommets_visites = [] # Liste des sommets visités
     sommets_fermes = [] # Liste des sommets fermés
@@ -113,14 +113,14 @@ def chercher_dfs(labyrinthe:nx.Graph, source, destination) -> list:
         if destination in voisins:
             sommets_visites.append(destination)
 
-            """"# Construction de l'itinéraire
+            # Construction de l'itinéraire
             itineraire = []
 
             for i in range(len(sommets_visites) -1):
                 sommet = sommets_visites[i]
                 itineraire.append((sommet, sommets_visites[i+1]))
             
-            return itineraire"""
+            return itineraire
 
             return sommets_visites
         
@@ -135,7 +135,7 @@ def chercher_dfs(labyrinthe:nx.Graph, source, destination) -> list:
         sommet_actuel = p.depile() # Le dernier sommet empilé devient le sommet actuel
     
 
-    """"# Construction de l'itinéraire
+    # Construction de l'itinéraire
     itineraire = []
 
     for i in range(len(sommets_fermes) -1):
@@ -143,9 +143,9 @@ def chercher_dfs(labyrinthe:nx.Graph, source, destination) -> list:
         itineraire.append((sommet, sommets_fermes[i+1]))
 
 
-    return itineraire"""
+    return itineraire
 
-    return sommets_fermes
+    #return sommets_fermes
 
             
         
@@ -167,17 +167,22 @@ if __name__ == "__main__":
     
     # Branche à partir du sommet C
     laby.add_edge("C", "F")
+    laby.add_edge("C", "G")
     
     
     
     
     
-    recherche = chercher_dfs(laby,"A", "E")
-    print(recherche)
-    voisin_e = voisin_plus_loin(recherche, ["B", "G"], "E")
-    print(voisin_e)
-    print(voisin_plus_loin(recherche, list(laby.neighbors(voisin_e)), voisin_e))
-    print(backtracking(laby, recherche), "vs", nx.shortest_path(laby, "A", "E"))
+    recherche = chercher_dfs(laby,"D", "H")
+  
+    sommets_recherche = []
+    for arete in recherche:
+        for sommet in arete:
+            if sommet not in sommets_recherche:
+                sommets_recherche.append(sommet)
+                
+                
+
     
     
     
