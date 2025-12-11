@@ -122,7 +122,7 @@ def chercher_dfs(labyrinthe:nx.Graph, source, destination) -> list:
             
             return itineraire
 
-            return sommets_visites
+         
         
         # On explore les voisins du sommet actuel
         for v in voisins:
